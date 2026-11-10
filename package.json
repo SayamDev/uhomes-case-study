@@ -1,0 +1,25 @@
+{
+  "name": "uhomes-fit-check-home",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blossom-carousel/core": "^1.1.10",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource/poppins": "^5.3.0",
+    "motion": "^14.10.1",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.16.0",
+    "vite": "^8.3.6"
+  }
+}

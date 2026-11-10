@@ -1,0 +1,16 @@
+{
+  "_note": "Hero shader preset. Exported from the Toolcraft Hero Lab; the homepage reads it at build time.",
+  "colors": [
+    { "L": 0.25, "C": 0.07, "h": 18 },
+    { "L": 0.55, "C": 0.19, "h": 25 },
+    { "L": 0.70, "C": 0.17, "h": 23 },
+    { "L": 0.90, "C": 0.06, "h": 55 }
+  ],
+  "dot": 7.0,
+  "grain": 0.55,
+  "speed": 0.08,
+  "scale": 1.6,
+  "outside": 0.10,
+  "flashlight": 0.32,
+  "floors": 9
+}

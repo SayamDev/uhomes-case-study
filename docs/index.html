@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en-GB" class="is-loading">
+<head>
+<meta name="robots" content="noindex, nofollow" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>uhomes · Student rooms, checked against you (prototype)</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml" id="fav" />
+<link rel="icon" href="./icon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="./icon-180.png" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<meta name="description" content="Interview prototype: describe what you need and see which student rooms fit, with the full cost." />
+<meta name="theme-color" content="#212731" />
+<style>html{background:#171b22}.quick .loader-row,.quick #loader-canvas{display:none!important}</style>
+<script>try{if(localStorage.getItem('uh-intro-v23')==='1'&&!/[?&]intro\b/.test(location.search))document.documentElement.classList.add('quick')}catch(e){}</script>
+  <script type="module" crossorigin src="./assets/index-D1B5Uuvr.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-V7g69Tr5.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- LOADER -->
+<div class="loader" id="loader" aria-hidden="true">
+  <canvas id="loader-canvas"></canvas>
+  <div class="loader-row">
+    <p class="loader-status" id="loader-status">Switching on the lights</p>
+    <p class="loader-count"><span id="loader-count">0</span><span class="pct">%</span></p>
+  </div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span class="cursor-dot"></span><span class="cursor-label" id="cursor-label"></span></div>
+
+<header class="nav" id="nav">
+  <a class="nav-logo" href="#top" aria-label="uhomes, back to top"><span class="nav-u" data-mascot="nav"></span><span class="nav-word">uhomes</span></a>
+  <nav class="nav-steps" aria-label="Your booking journey">
+    <ol>
+      <li><a href="#brief" data-step="brief"><i>1</i><span>Find</span></a></li>
+      <li><a href="#rooms" data-step="rooms"><i>2</i><span>Rooms</span></a></li>
+      <li><a href="#rooms" data-step="ready" id="nav-ready"><i>3</i><span>Book</span></a></li>
+    </ol>
+  </nav>
+  <a class="nav-fit" href="#rooms" id="nav-fit" aria-live="polite"><b id="nav-fit-n">0</b> <span id="nav-fit-l">rooms fit</span></a>
+  <div class="nav-tools">
+    <a class="nav-saved" href="#rooms" id="nav-saved" hidden aria-label="Saved rooms"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><b id="saved-n">0</b></a>
+    <div class="nav-lang">
+      <button type="button" class="nav-ic" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-controls="lang-menu"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.25"/><path d="M2.75 10h14.5M10 2.75c2 2.2 3 4.6 3 7.25s-1 5-3 7.25c-2-2.2-3-4.6-3-7.25s1-5 3-7.25z"/></svg><span id="lang-cur">EN</span></button>
+      <ul class="lang-menu" id="lang-menu" role="menu" hidden></ul>
+    </div>
+    <a class="nav-ic nav-help" href="tel:+442076315139" title="Call or WhatsApp, 24/7"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3.5h2.2l1.1 3.3-1.5 1a8.5 8.5 0 0 0 4.9 4.9l1-1.5 3.3 1.1v2.2a1.6 1.6 0 0 1-1.7 1.6A12.8 12.8 0 0 1 3.9 5.2 1.6 1.6 0 0 1 5.5 3.5z"/></svg><span>24/7</span></a>
+    <button type="button" class="nav-login" data-auth="login">Log in</button>
+    <button type="button" class="nav-signup" data-auth="signup">Sign up</button>
+      <span class="nav-me" id="nav-me" hidden>✓ Saved to your account</span>
+    <button type="button" class="nav-menu" id="nav-menu" aria-expanded="false" aria-controls="nav-sheet" aria-label="Menu"><span></span><span></span></button>
+  </div>
+  <span class="proto-badge" title="Prototype for an interview. Rooms, prices and offers copied from uhomes on 8 Nov 2026.">Prototype</span>
+</header>
+<div class="nav-sheet" id="nav-sheet" hidden>
+  <nav class="ns-steps" aria-label="Your room check">
+    <a href="#brief" class="ns-step"><i>1</i><span><b>Find</b><small>Where, and what matters to you</small></span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg></a>
+    <a href="#rooms" class="ns-step"><i>2</i><span><b>Rooms</b><small id="ns-rooms">Every room, checked against you</small></span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg></a>
+    <a href="#reviews" class="ns-step"><i>★</i><span><b>Reviews</b><small>4.9 from 12 students</small></span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg></a>
+  </nav>
+  <div class="ns-acct">
+    <button type="button" data-auth="signup" class="ns-primary">Sign up free</button>
+    <button type="button" data-auth="login" class="ns-ghost">Log in</button>
+  </div>
+  <p class="ns-why">Keep your shortlist and get price-drop alerts on any device.</p>
+  <div class="ns-row">
+    <button type="button" id="lang-btn-m" class="ns-pill"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M3 10h14M10 3c2.5 2.6 2.5 11.4 0 14M10 3c-2.5 2.6-2.5 11.4 0 14"/></svg><span id="lang-cur-m">English</span></button>
+    <a href="tel:+442076315139" class="ns-pill"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3.5h2.5l1.2 3.2-1.6 1.1a8 8 0 0 0 5.1 5.1l1.1-1.6 3.2 1.2V15a1.5 1.5 0 0 1-1.6 1.5A13 13 0 0 1 3.5 5.1 1.5 1.5 0 0 1 5 3.5z"/></svg>24/7 desk</a>
+  </div>
+</div>
+<dialog class="lang-dlg" id="lang-dlg" aria-labelledby="lang-dlg-t">
+  <header class="ld-head"><h2 id="lang-dlg-t">Language</h2><button type="button" class="ready-x" id="lang-dlg-x" aria-label="Close">×</button></header>
+  <div class="ld-list" id="lang-dlg-list" role="radiogroup" aria-labelledby="lang-dlg-t"></div>
+  <p class="ld-note">uhomes.com is available in all 12. This prototype is in English only.</p>
+</dialog>
+
+<dialog class="auth" id="auth" aria-labelledby="auth-title" data-mode="signup">
+  <button type="button" class="ready-x auth-x" id="auth-x" aria-label="Close">×</button>
+  <div class="auth-tabs" role="tablist" aria-label="Account">
+    <button type="button" role="tab" id="tab-signup" aria-controls="pane-signup" aria-selected="true" data-mode-to="signup">Sign up</button>
+    <button type="button" role="tab" id="tab-login" aria-controls="pane-login" aria-selected="false" data-mode-to="login" tabindex="-1">Log in</button>
+  </div>
+  <section class="auth-pane auth-signup" id="pane-signup" role="tabpanel" aria-labelledby="tab-signup">
+    <div class="as-hero"><span data-mascot="auth"></span><span class="as-free">Free · no card</span></div>
+    <h2 id="auth-title">Save your brief and your shortlist</h2>
+    <p class="auth-sub" id="auth-sub">Come back on any device. Your guarantor can see the same rooms.</p>
+    <ul class="auth-why"><li>Price-drop and waitlist alerts for rooms you save</li><li>Your brief, shortlist and checklist on any device</li><li>Share with a parent or guarantor in one tap</li></ul>
+    <div class="auth-btns">
+      <button type="button" class="btn btn-primary btn-wide" data-auth-go="email">Sign up with email</button>
+      <div class="auth-row"><button type="button" class="btn btn-secondary" data-auth-go="Google">Google</button><button type="button" class="btn btn-secondary" data-auth-go="Apple">Apple</button></div>
+    </div>
+    <p class="auth-small">Takes about 20 seconds. We never post or share anything.</p>
+  </section>
+  <section class="auth-pane auth-login" id="pane-login" role="tabpanel" aria-labelledby="tab-login" hidden>
+    <div class="al-key" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg></div>
+    <h2 id="login-title">Welcome back</h2>
+    <p class="auth-sub">Your shortlist, brief and checklist are where you left them.</p>
+    <form class="al-form" id="login-form" novalidate>
+      <label for="login-email">Email</label>
+      <input type="email" id="login-email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="login-err">
+      <p class="al-err" id="login-err" role="alert" hidden>Enter the email you signed up with, like name@example.com.</p>
+      <button type="submit" class="btn btn-dark btn-wide">Email me a sign-in link</button>
+    </form>
+    <p class="auth-or"><span>or</span></p>
+    <div class="auth-row"><button type="button" class="btn btn-secondary" data-auth-go="Google">Google</button><button type="button" class="btn btn-secondary" data-auth-go="Apple">Apple</button></div>
+  </section>
+  <p class="auth-note" id="auth-note">Prototype: no account is created and nothing you type is sent.</p>
+  <p class="auth-switch"><span class="sw-s">Already have an account? <button type="button" data-mode-to="login">Log in</button></span><span class="sw-l">New to uhomes? <button type="button" data-mode-to="signup">Create a free account</button></span></p>
+</dialog>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <canvas id="hero-gl" aria-hidden="true"></canvas>
+    <p class="hero-word" id="hero-word" aria-hidden="true">uhomes</p>
+    <div class="hero-meta">
+      <p><b class="slogan">Home starts with u.</b><br>Showing <span data-bname>iQ Chandos House</span>, <span data-bcity>Manchester</span></p>
+      <p class="hm-mid">Every window is a room<br>Lit windows fit your brief</p>
+    </div>
+    <div class="hero-bottom">
+      <div class="hero-copy"><h1 id="hero-title" class="hero-title"><span class="ln"><span>Find the right room.</span></span><span class="ln"><span>See the <em>real price.</em></span></span></h1>
+      <p class="hero-sub">Tell us your budget, your course dates and who's backing you. We check every room and show the full cost before you book.</p></div>
+      <div class="hero-cta">
+        <div class="budget" id="budget">
+          <div class="budget-u"><span data-mascot="hero"></span><p class="u-say" id="u-say" aria-live="polite">Hi, I’m U. Slide your budget and I’ll light up every room that fits.</p></div>
+          <div class="budget-top"><label for="budget-range">Your weekly budget</label><output id="budget-out" for="budget-range">£285/wk</output></div>
+          <input type="range" id="budget-range" min="200" max="360" step="1" value="285" aria-describedby="budget-count">
+          <div class="budget-scale" aria-hidden="true"><span>£200</span><span>£360</span></div>
+          <p class="budget-count" id="budget-count" aria-live="polite"><b id="budget-n">0</b> <span id="budget-of-w">of <span id="budget-of">75</span></span> <span id="budget-tail">real listings fit your brief</span></p>
+          <p class="budget-where">At <b data-bname>iQ Chandos House</b>, <span data-bcity>Manchester</span>. <a href="#brief" id="change-where">Change building</a></p>
+        </div>
+        <a class="btn btn-primary btn-xl" href="#brief" id="start-check" data-cursor="Start">Start your room check <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v11M5.5 11 10 15.5 14.5 11"/></svg></a>
+        <p class="hero-cta-note">Takes about a minute. No sign-up.</p>
+        <button type="button" class="watch" id="watch" aria-haspopup="dialog">
+          <span class="watch-thumb"><video id="watch-loop" src="./media/hero-loop.mp4" poster="./media/hero-loop-poster.jpg" muted loop playsinline preload="none" aria-hidden="true"></video><span class="watch-play" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M7 5v10l8-5z"/></svg></span></span>
+          <span class="watch-t"><b>See how U checks a room</b><span>20-second film · real uhomes prices</span></span>
+        </button>
+        <a class="tp-mini" href="https://uk.trustpilot.com/review/uhomes.com" target="_blank" rel="noopener"><span class="tp-stars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span><b>4.8/5</b> on Trustpilot, as shown on uhomes.com</span></a>
+      </div>
+    </div>
+    <button class="offer" id="offer" type="button" aria-describedby="offer-terms" data-cursor="Claim">
+      <svg class="offer-ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text><textPath href="#ring" textLength="486" lengthAdjust="spacing">Real uhomes offer · book through uhomes · T&amp;Cs apply ·</textPath></text></svg>
+      <span class="offer-core"><span class="offer-big" id="offer-big">£500</span><span class="offer-small" id="offer-cta">cashback, up to</span></span>
+    </button>
+    <p class="offer-terms sr" id="offer-terms">Up to £500 cashback, as listed by uhomes for iQ Chandos House on 8 Nov 2026. Terms on uhomes.</p>
+    <a class="scroll-cue" href="#brief" aria-label="Scroll to see how it works"><span></span></a>
+  </section>
+
+  <!-- FIND: one step, like uhomes' own search, but it also reads what you need -->
+  <section class="brief find" id="brief" aria-labelledby="brief-title">
+    <div class="find-inner">
+      <div class="find-head">
+        <p class="eyebrow">Step 1 · Find</p>
+        <h2 id="brief-title" class="find-title">Where are you going, and what matters to you?</h2>
+      </div>
+      <form class="find-card" id="ask" novalidate>
+        <div class="find-where" id="where">
+          <label for="city-q" class="find-k">Where</label>
+          <div class="combo" id="combo">
+            <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>
+            <input id="city-q" type="text" role="combobox" aria-expanded="false" aria-controls="city-list" aria-autocomplete="list" placeholder="City, university or property" autocomplete="off" value="iQ Chandos House, Manchester">
+            <button type="button" class="combo-x" id="combo-x" aria-label="Clear where">×</button>
+            <ul class="combo-list" id="city-list" role="listbox" aria-label="Places" hidden></ul>
+          </div>
+        </div>
+        <div class="find-what">
+          <label for="need" class="find-k">What matters to you <span class="ask-hint">In your own words. U picks out the details.</span></label>
+          <textarea id="need" name="need" rows="2" spellcheck="true" placeholder="e.g. En suite near the University of Manchester, up to £285 a week, 44 weeks. My mum can be my guarantor."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary find-go" id="ask-go" data-cursor="Check">
+          <span class="btn-label">Check my rooms</span>
+          <svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5.5 15.5 10 11 14.5"/></svg>
+        </button>
+      </form>
+      <div class="try" role="group" aria-label="Try another example">
+        <span class="try-label">Try:</span>
+        <button type="button" class="chip" data-example="Studio, no guarantor, about £350 a week. I'd rather pay in full up front.">Studio, no guarantor</button>
+        <button type="button" class="chip" data-example="Cheapest en suite, under £260 a week, staying the full 51 weeks.">Under £260, 51 weeks</button>
+        <button type="button" class="chip" data-example="£1,150 a month, en suite, 44 weeks, dad as guarantor.">Monthly budget</button>
+      </div>
+      <div class="understood" id="understood" aria-live="polite">
+        <div class="und-top">
+          <p class="understood-head"><span data-mascot="brief"></span><span>U read this from your words. <span class="uh-sub">Tap one to change it.</span></span></p>
+          <a class="understood-result" href="#rooms" id="understood-result"><span class="ur-n" id="ur-n">0</span><span class="ur-t">rooms fit you<br><b>See them</b></span><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v11M5.5 11 10 15.5 14.5 11"/></svg></a>
+        </div>
+        <div class="und-empty" id="und-empty">
+          <p><b>Nothing here yet.</b> Write what you need above, or tap an example, and U will show what it understood. Every detail shows the words it came from, and you can change any of them.</p>
+        </div>
+        <ul class="chips" id="chips"></ul>
+        <div class="und-help" id="und-help" hidden></div>
+        <div class="und-foot">
+          <button type="button" class="share-b" id="share-brief"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M8 12a3 3 0 0 0 4.2 0l2.6-2.6a3 3 0 0 0-4.2-4.2L9.5 6.3M12 8a3 3 0 0 0-4.2 0L5.2 10.6a3 3 0 0 0 4.2 4.2l1.1-1.1"/></svg>Send this brief to a parent</button>
+          <button type="button" class="share-b so-b" id="start-over"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10a6 6 0 1 0 2-4.5M4 4v3.5h3.5"/></svg>Start over</button>
+          <span class="caption sim-note">Simulated AI: fixed rules read your words; every value shows the words it came from.</span>
+        </div>
+      </div>
+      <ul class="trust-row" aria-label="On every uhomes booking">
+        <li>Verified listings</li><li>Price-Match Guarantee</li><li>24/7 multilingual support</li><li class="tr-refer"><a class="tr-link" href="#refer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11.5" rx="2"/><path d="M2.5 9h19v3.5h-19zM12 9v11.5M12 9c-2-4-6.5-4-6.5-1.5S9.5 9 12 9zm0 0c2-4 6.5-4 6.5-1.5S14.5 9 12 9z"/></svg><span>Refer a friend, get</span><b>£50</b></a></li>
+      </ul>
+    </div>
+  </section>
+
+
+
+
+
+  <!-- ROOMS -->
+  <dialog class="sheet" id="lever-sheet" aria-labelledby="sheet-title">
+  <div class="sheet-grip" aria-hidden="true"></div>
+  <header class="sheet-head"><h2 class="sheet-title" id="sheet-title" tabindex="-1" autofocus>Filters</h2><button type="button" class="ready-x" id="sheet-x" aria-label="Close filters">×</button></header>
+  <p class="sheet-note caption">Each filter shows how many rooms it rules out. Your written brief updates to match.</p>
+  <div class="sheet-body"><div class="levers" id="levers"></div></div>
+  <footer class="sheet-foot"><button type="button" class="btn btn-secondary" id="sheet-clear">Clear all</button><button type="button" class="btn btn-primary" id="sheet-done"><span>Show <b id="sheet-n">0</b> rooms</span></button></footer>
+</dialog>
+  <section class="rooms" id="rooms" aria-labelledby="rooms-title">
+    <div class="rooms-head">
+      <div class="rooms-h"><p class="eyebrow light">Step 2 · Rooms that fit</p>
+      <h2 id="rooms-title" class="huge-title"><span class="ln"><span>Rooms that fit you,</span></span><span class="ln"><span>first.</span></span></h2></div>
+      <div class="rooms-side">
+        <p>Every room type and price as listed on uhomes (8 Nov 2026), sorted by your brief. Swipe through; tap the AI check to see why.</p>
+
+      </div>
+    </div>
+    <div class="kinds" id="kinds" role="group" aria-label="Room type"></div>
+    <div class="rbar" id="rbar">
+      <div class="rbar-in">
+        <p class="rbar-count" id="rb-count" aria-live="polite" aria-atomic="true"><b id="rb-n">0</b> of <span id="rb-total">0</span> rooms fit your brief</p>
+        <div class="rbar-tools">
+          <button type="button" class="rb-btn rb-filters" id="filters-open" aria-haspopup="dialog" aria-controls="lever-sheet"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M6 10h8M8.5 14h3"/></svg>Filters<span class="rb-badge" id="rb-active" hidden>0</span></button>
+          <label class="rb-btn rb-sort"><span class="sr">Sort rooms by</span><select id="rb-sort">
+            <option value="match">Best match</option>
+            <option value="total">Lowest total</option>
+            <option value="wk">Lowest weekly</option>
+            <option value="size">Most space</option>
+            <option value="book">Bookable now first</option>
+          </select></label>
+          <button type="button" class="rb-btn rb-saved" id="rb-saved" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>Saved<span class="rb-sn" id="rb-sn"></span></button>
+        </div>
+      </div>
+      <ul class="rb-chips" id="rb-chips" aria-label="Active filters"></ul>
+    </div>
+    <ol class="carousel" id="carousel" aria-label="Room types, scroll sideways" tabindex="0"></ol>
+    <div class="rail">
+      <div class="rail-track" aria-hidden="true"><span id="rail-fill"></span></div>
+      <p class="rail-pos" id="rail-pos" aria-live="off"></p>
+      <div class="rail-btns">
+        <button class="btn-round" id="prev" aria-label="Previous rooms"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 5 7.5 10l5 5"/></svg></button>
+        <button class="btn-round" id="next" aria-label="Next rooms"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg></button>
+      </div>
+    </div>
+    <section class="reviews" id="reviews" aria-labelledby="rev-title">
+      <div class="rev-head">
+        <h3 id="rev-title">What students who lived here say</h3>
+        <p class="rev-sum" id="rev-sum"></p>
+      </div>
+      <ul class="rev-list" id="rev-list" tabindex="0" aria-label="Recent student reviews, scrollable"></ul>
+      <p class="rev-foot caption">Real reviews from uhomes, shortened. Downsides people mentioned: Wi-Fi is sometimes slow, no signal while waiting for the lift, no pool. <a id="rev-all" href="#" target="_blank" rel="noopener">Read all reviews on uhomes ↗</a></p>
+    </section>
+    <div class="grid-empty" id="grid-empty" hidden></div>
+  </section>
+
+  <!-- MOVE-IN SUPPORT: front desk + keyring referral -->
+  <section class="support" id="support" aria-labelledby="support-title">
+    <div class="support-head">
+      <p class="eyebrow">Front desk</p>
+      <h2 id="support-title" class="huge-title dark-ink"><span class="ln"><span>Someone's always</span></span><span class="ln"><span>at the front desk.</span></span></h2>
+    </div>
+    <div class="support-grid">
+      <div class="intercom" id="intercom">
+        <div class="ic-top">
+          <span class="ic-led" aria-hidden="true"></span>
+          <p class="ic-title">uhomes front desk<br><span>24/7 · real people, not a bot</span></p>
+          <div class="ic-grille" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <p class="ic-number" aria-label="Phone number">+44 20 7631 5139</p>
+        <div class="ic-buttons">
+          <button class="ic-btn" data-buzz="call" type="button"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3.5h2.5l1.2 3.2-1.6 1.1a8 8 0 0 0 5.1 5.1l1.1-1.6 3.2 1.2V15a1.5 1.5 0 0 1-1.5 1.5A12.5 12.5 0 0 1 3.5 5 1.5 1.5 0 0 1 5 3.5z"/></svg><span>Call us</span></button>
+          <button class="ic-btn" data-buzz="whatsapp" type="button"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 16.5 5 13.3A6.8 6.8 0 1 1 7.6 15.6z"/><path d="M8 7.6c.2 1.8 1.8 3.6 3.9 4.2l.9-1-1.4-.8"/></svg><span>WhatsApp</span></button>
+          <button class="ic-btn" data-buzz="chat" type="button"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 5.5h12v7.5H9l-3.5 2.5V13H4z"/></svg><span>Live chat</span></button>
+          <button class="ic-btn" data-buzz="email" type="button"><svg class="icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="5" width="14" height="10" rx="1.5"/><path d="m3.5 5.8 6.5 5 6.5-5"/></svg><span>Email us</span></button>
+        </div>
+        <p class="ic-status" id="ic-status" aria-live="polite">Press a button to buzz the desk.</p>
+      </div>
+
+      <div class="refer" id="refer">
+        <span class="ref-st ref-card" aria-hidden="true"><svg class="ref-ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rr-card" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text><textPath href="#rr-card" textLength="486" lengthAdjust="spacing">Refer a friend · get £50 · Refer a friend · get £50 ·</textPath></text></svg><span class="ref-core"><span class="ref-big">£50</span><span class="ref-small">gift card</span></span></span>
+        <div class="keyring" aria-hidden="true">
+          <svg viewBox="0 0 240 220" class="keys">
+            <circle class="ring" cx="80" cy="48" r="26"/>
+            <g class="key k1"><circle cx="66" cy="96" r="17"/><circle cx="66" cy="96" r="6"/><path d="M66 113 V190 M66 160 h12 v7 h-12 M66 176 h9 v7 h-9"/></g>
+            <g class="key k2"><rect x="80" y="78" width="30" height="30" rx="9"/><circle cx="95" cy="93" r="5"/><path d="M95 108 V186 M95 154 h-12 v7 h12 M95 170 h-9 v7 h9"/><g class="k2-tag"><rect x="108" y="128" width="62" height="28" rx="6"/><text x="139" y="147">£50</text></g></g>
+            <text class="friend" x="168" y="208">for your friend's booking</text>
+          </svg>
+        </div>
+        <div class="refer-copy">
+          <p class="eyebrow light">Refer to earn</p>
+          <h3 class="refer-title">Bring a flatmate.<br>Get a <em class="ref-hl">£50</em> gift card.</h3>
+          <ol class="refer-steps"><li><b>Share</b> your link</li><li><b>They book</b> through uhomes</li><li><b>You get £50</b> from a brand you choose</li></ol>
+          <div class="refer-actions">
+            <button class="btn btn-light" id="copy-ref" type="button" data-cursor="Copy">Copy your invite link</button>
+            <a class="link-light" href="https://en.uhomes.com/refer-to-earn" target="_blank" rel="noopener">How it works</a>
+          </div>
+          <p class="refer-terms">For bookings of 39 weeks or more on official uhomes.com listings, as stated on uhomes.com. The link here is a prototype placeholder.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+</main>
+
+<footer class="foot">
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="foot-u"><span data-mascot="foot"></span><div><p class="foot-logo">uhomes</p><p class="foot-slogan">Home starts with u.</p></div></div>
+      <p class="foot-line">Student homes and rentals in 2,000+ university cities.</p>
+      <a class="foot-call" href="tel:+442076315139"><span>Call or WhatsApp, 24/7</span><b>+44 20 7631 5139</b></a>
+      <a class="foot-tp" href="https://www.trustpilot.com/review/uhomes.com" target="_blank" rel="noopener"><span class="tp-mini-stars" aria-hidden="true">★★★★★</span> Read uhomes reviews on Trustpilot</a>
+      <a class="ref-st ref-foot" href="#refer" aria-label="Refer a friend and get a £50 gift card"><svg class="ref-ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rr-foot" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text><textPath href="#rr-foot" textLength="486" lengthAdjust="spacing">Refer a friend · get £50 · Refer a friend · get £50 ·</textPath></text></svg><span class="ref-core"><span class="ref-big">£50</span><span class="ref-small">per friend</span></span></a>
+      <div class="foot-app"><a href="https://static.uhzcdn.com/static/webapp/09/html/openinstall/uhomes_global.html?channelCode=webapp_blog_download_gl" target="_blank" rel="noopener">Get the uhomes app<small>App Store and Google Play</small></a></div>
+    </div>
+    <nav class="foot-col" aria-label="Popular cities"><p>Popular cities</p>
+      <a href="https://en.uhomes.com/uk/london" target="_blank" rel="noopener">London</a><a href="https://en.uhomes.com/uk/manchester" target="_blank" rel="noopener">Manchester</a><a href="https://en.uhomes.com/uk/birmingham" target="_blank" rel="noopener">Birmingham</a><a href="https://en.uhomes.com/uk/leeds" target="_blank" rel="noopener">Leeds</a><a href="https://en.uhomes.com/uk/glasgow" target="_blank" rel="noopener">Glasgow</a><a href="https://en.uhomes.com/us/new-york" target="_blank" rel="noopener">New York</a><a href="https://en.uhomes.com/au/sydney" target="_blank" rel="noopener">Sydney</a><a href="https://en.uhomes.com/ca/toronto" target="_blank" rel="noopener">Toronto</a>
+    </nav>
+    <nav class="foot-col" aria-label="Support"><p>Support</p>
+      <a href="https://en.uhomes.com/general-pages/helps/123888" target="_blank" rel="noopener">Help Center</a><a href="https://en.uhomes.com/general-pages/contact-us" target="_blank" rel="noopener">Contact us</a><a href="tel:+442076315139">WhatsApp +44 20 7631 5139</a><a href="#support">Front desk on this page</a>
+    </nav>
+    <nav class="foot-col" aria-label="Company"><p>Company</p>
+      <a href="https://en.uhomes.com/general-pages/about-uhomes" target="_blank" rel="noopener">About us</a><a href="https://job.uhomes.com/jobs" target="_blank" rel="noopener">Careers</a><a href="https://en.uhomes.com/blog/" target="_blank" rel="noopener">Blog</a><a href="https://en.uhomes.com/company-news" target="_blank" rel="noopener">Newsroom</a><a href="https://en.uhomes.com/plus/" target="_blank" rel="noopener">uhomes+</a>
+    </nav>
+    <nav class="foot-col" aria-label="Partners"><p>Partners</p>
+      <a href="https://en.uhomes.com/providers" target="_blank" rel="noopener">Accommodation providers</a><a href="https://en.uhomes.com/sale-channel-introduction" target="_blank" rel="noopener">Become a partner</a>
+      <p class="foot-sub">Follow</p>
+      <div class="foot-social"><a href="https://www.instagram.com/uhomescom/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/uhomescom" target="_blank" rel="noopener">Facebook</a><a href="https://www.youtube.com/c/Uhomes_com" target="_blank" rel="noopener">YouTube</a><a href="https://www.linkedin.com/company/uhomes/" target="_blank" rel="noopener">LinkedIn</a></div>
+    </nav>
+  </div>
+  <p class="foot-word" id="foot-word" aria-hidden="true"><span>u</span><span>h</span><span>o</span><span>m</span><span>e</span><span>s</span></p>
+  <div class="foot-legal">
+    <nav aria-label="Legal"><a href="https://privacy-center.uhomes.com/privacy-center.html#page=TermsAndConditions" target="_blank" rel="noopener">Terms</a><a href="https://privacy-center.uhomes.com/privacy-center.html#page=PrivacyPolicy" target="_blank" rel="noopener">Privacy</a><a href="https://privacy-center.uhomes.com/privacy-center.html#page=CookiePolicy" target="_blank" rel="noopener">Cookies</a><a href="https://en.uhomes.com/sitemap.xml" target="_blank" rel="noopener">Sitemap</a></nav>
+    <p>Interview prototype by a Product Engineer candidate, not affiliated with or endorsed by uhomes, iQ or HL-Xavier. Footer links go to the real uhomes.com pages. Rooms, prices, tenancies, offers and policies were copied from uhomes.com on 8 Nov 2026 and may have changed; the AI reading is simulated. <button type="button" class="lab-open" data-metrics>Live metrics</button></p>
+  </div>
+</footer>
+
+<div class="mobile-bar" id="mobile-bar" role="region" aria-label="Selected room">
+  <div><p class="mb-room" id="mb-room">–</p><p class="mb-meta" id="mb-meta"></p></div>
+  <button type="button" class="btn btn-primary" id="mb-ready">Get ready</button>
+</div>
+<div class="deal-bar" id="deal-bar" role="region" aria-label="First booking offer"><div class="db-flip">
+  <div class="db-face db-a"><span class="db-tag">uhomes offer</span><span id="db-text">Up to £500 cashback when you book through uhomes</span><button type="button" class="db-btn" data-claim>Add to my list</button><span class="db-note">T&amp;Cs on uhomes</span><button type="button" class="db-x" id="deal-x" aria-label="Hide this offer">×</button></div>
+</div></div>
+
+<dialog class="ready" id="ready" aria-labelledby="ready-title">
+  <div class="ready-in">
+    <header class="ready-head">
+      <p class="eyebrow">Step 3 · Ready to book</p>
+      <button type="button" class="ready-x" id="ready-x" aria-label="Close">×</button>
+    </header>
+    <div id="ready-body"></div>
+  </div>
+</dialog>
+<dialog class="rv" id="rv" aria-labelledby="rv-title">
+  <div class="rv-in"><header class="ph-head"><h2 id="rv-title">Reviews</h2><button type="button" class="ready-x" id="rv-x" aria-label="Close reviews">×</button></header>
+  <ul class="rev-list rev-col" id="rv-list"></ul><p class="caption">Real reviews from uhomes, shortened.</p></div>
+</dialog>
+<dialog class="lb" id="lb" aria-labelledby="lb-title">
+  <div class="lb-in">
+    <header class="lb-head"><div><h2 id="lb-title">Photos</h2><p class="lb-n" id="lb-n"></p></div><button type="button" class="ready-x" id="lb-x" aria-label="Close photos">×</button></header>
+    <div class="lb-stage"><img id="lb-img" alt="" referrerpolicy="no-referrer" draggable="false">
+      <button type="button" class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 5 7.5 10l5 5"/></svg></button>
+      <button type="button" class="lb-nav lb-next" id="lb-next" aria-label="Next photo"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg></button></div>
+    <p class="lb-cap" id="lb-cap"></p>
+    <p class="caption">Photos from the uhomes listing (supplied by the landlord). More on uhomes.com.</p>
+  </div>
+</dialog>
+<div class="cmp-tray" id="cmp-tray" role="region" aria-label="Rooms to compare" hidden>
+  <ul class="cmp-picks" id="cmp-picks"></ul>
+  <button type="button" class="btn btn-primary" id="cmp-open">Compare</button>
+  <button type="button" class="cmp-clear" id="cmp-clear">Clear</button>
+</div>
+<dialog class="cmp" id="cmp" aria-labelledby="cmp-title">
+  <div class="cmp-in">
+    <header class="cmp-head">
+      <div><p class="eyebrow">Compare</p><h2 id="cmp-title">Side by side</h2></div>
+      <label class="cmp-diff"><input type="checkbox" id="cmp-diff"> Only show differences</label>
+      <button type="button" class="ready-x" id="cmp-x" aria-label="Close compare">×</button>
+    </header>
+    <div class="cmp-scroll"><table class="cmp-t" id="cmp-t"></table></div>
+    <p class="caption">From the uhomes listing on 8 Nov 2026. Green marks the better value in each row.</p>
+  </div>
+</dialog>
+<dialog class="film" id="film" aria-labelledby="film-title" aria-describedby="film-desc">
+  <div class="film-in">
+    <header class="film-head"><h2 id="film-title">How U checks a room</h2><button type="button" class="ready-x" id="film-x" aria-label="Close film">×</button></header>
+    <video id="film-v" src="./media/hero-film.mp4" poster="./media/hero-film-poster.jpg" controls playsinline preload="none"></video>
+    <p class="caption" id="film-desc">No narration, soft piano. On screen: “Your first room, away from home.” U says “Tell me what you need.” The brief “En suite · up to £285 a week · 44 weeks” finds 2 rooms that fit. Gold En Suite, £267 a week (was £276), £12,144 total for 44 weeks from 11 Sep 2027, bills included, instalments match loan terms. “Home starts with u.” Made with raea from real uhomes listings (8 Nov 2026).</p>
+  </div>
+</dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+
+</body>
+</html>
